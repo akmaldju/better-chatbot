@@ -1,10 +1,5 @@
-import "server-only";
-
-import { createOllama } from "ollama-ai-provider";
-import { openai } from "@ai-sdk/openai";
+// models.ts
 import { google } from "@ai-sdk/google";
-import { anthropic } from "@ai-sdk/anthropic";
-import { xai } from "@ai-sdk/xai";
 import { openrouter } from "@openrouter/ai-sdk-provider";
 import { LanguageModel } from "ai";
 import {
@@ -13,52 +8,67 @@ import {
 } from "./create-openai-compatiable";
 import { ChatModel } from "app-types/chat";
 
-const ollama = createOllama({
-  baseURL: process.env.OLLAMA_BASE_URL || "http://localhost:11434/api",
-});
-
 const staticModels = {
-  openai: {
-    "gpt-4.1": openai("gpt-4.1"),
-    "gpt-4.1-mini": openai("gpt-4.1-mini"),
-    "4o": openai("gpt-4o"),
-    "4o-mini": openai("gpt-4o-mini"),
-    "o4-mini": openai("o4-mini", {
-      reasoningEffort: "medium",
-    }),
-  },
   google: {
-    "gemini-2.0-flash-lite": google("gemini-2.0-flash-lite"),
-    "gemini-2.5-flash": google("gemini-2.5-flash", {}),
+    "gemini-2.5-flash": google("gemini-2.5-flash"),
     "gemini-2.5-pro": google("gemini-2.5-pro"),
-  },
-  anthropic: {
-    "claude-4-sonnet": anthropic("claude-4-sonnet-20250514"),
-    "claude-4-opus": anthropic("claude-4-opus-20250514"),
-    "claude-3-7-sonnet": anthropic("claude-3-7-sonnet-latest"),
-  },
-  xai: {
-    "grok-3": xai("grok-3-latest"),
-    "grok-3-mini": xai("grok-3-mini-latest"),
-  },
-  ollama: {
-    "gemma3:1b": ollama("gemma3:1b"),
-    "gemma3:4b": ollama("gemma3:4b"),
-    "gemma3:12b": ollama("gemma3:12b"),
+    "gemini-2.5-flash-lite": google("gemini-2.5-flash-lite"),
+    "gemini-2.0-flash": google("gemini-2.0-flash"),
+    "gemini-2.0-flash-preview-image-generation": google(
+      "gemini-2.0-flash-preview-image-generation",
+    ),
+    "learnlm-2.0-flash-experimental": google("learnlm-2.0-flash-experimental"),
+    "gemma-3-27b-it": google("gemma-3-27b-it"),
+    "gemma-3-12b-it": google("gemma-3-12b-it"),
+    "gemma-3-4b-it": google("gemma-3-4b-it"),
+    "gemma-3-1b-it": google("gemma-3-1b-it"),
+    "gemma-3n-e4b-it": google("gemma-3n-e4b-it"),
+    "gemma-3n-e2b-it": google("gemma-3n-e2b-it"),
   },
   openRouter: {
-    "qwen3-8b:free": openrouter("qwen/qwen3-8b:free"),
-    "qwen3-14b:free": openrouter("qwen/qwen3-14b:free"),
-    "qwen3-coder": openrouter("qwen/qwen3-coder"),
+    "google/gemini-2.0-flash-exp:free": openrouter("google/gemini-2.0-flash-exp:free"),
+    "moonshotai/kimi-k2:free": openrouter("moonshotai/kimi-k2:free"),
+    "cognitivecomputations/dolphin-mistral-24b-venice-edition:free": openrouter("cognitivecomputations/dolphin-mistral-24b-venice-edition:free"),
+    "google/gemma-3n-e2b-it:free": openrouter("google/gemma-3n-e2b-it:free"),
+    "tencent/hunyuan-a13b-instruct:free": openrouter("tencent/hunyuan-a13b-instruct:free"),
+    "mistralai/mistral-small-3.2-24b-instruct:free": openrouter("mistralai/mistral-small-3.2-24b-instruct:free"),
+    "moonshotai/kimi-dev-72b:free": openrouter("moonshotai/kimi-dev-72b:free"),
+    "deepseek/deepseek-r1-0528:free": openrouter("deepseek/deepseek-r1-0528:free"),
+    "mistralai/devstral-small-2505:free": openrouter("mistralai/devstral-small-2505:free"),
+    "microsoft/mai-ds-r1:free": openrouter("microsoft/mai-ds-r1:free"),
+    "moonshotai/kimi-vl-a3b-thinking:free": openrouter("moonshotai/kimi-vl-a3b-thinking:free"),
+    "google/gemini-2.5-pro-exp-03-25": openrouter("google/gemini-2.5-pro-exp-03-25"),
+    "google/gemma-3-27b-it:free": openrouter("google/gemma-3-27b-it:free"),
+    "google/gemma-3-12b-it:free": openrouter("google/gemma-3-12b-it:free"),
+    "google/gemma-3n-e4b-it:free": openrouter("google/gemma-3n-e4b-it:free"),
+    "deepseek/deepseek-r1:free": openrouter("deepseek/deepseek-r1:free"),
+    "deepseek/deepseek-chat-v3-0324:free": openrouter("deepseek/deepseek-chat-v3-0324:free"),
+    "deepseek/deepseek-r1-0528-qwen3-8b:free": openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free"),
+    "deepseek/deepseek-r1-distill-llama-70b:free": openrouter("deepseek/deepseek-r1-distill-llama-70b:free"),
+    "meta-llama/llama-3.3-70b-instruct:free": openrouter("meta-llama/llama-3.3-70b-instruct:free"),
+    "meta-llama/llama-3.2-11b-vision-instruct:free": openrouter("meta-llama/llama-3.2-11b-vision-instruct:free"),
+    "meta-llama/llama-3.2-3b-instruct:free": openrouter("meta-llama/llama-3.2-3b-instruct:free"),
+    "meta-llama/llama-3.1-405b-instruct:free": openrouter("meta-llama/llama-3.1-405b-instruct:free"),
+    "qwen/qwen3-235b-a22b:free": openrouter("qwen/qwen3-235b-a22b:free"),
+    "qwen/qwen3-235b-a22b-07-25:free": openrouter("qwen/qwen3-235b-a22b-07-25:free"),
+    "qwen/qwen3-30b-a3b:free": openrouter("qwen/qwen3-30b-a3b:free"),
+    "qwen/qwen2.5-vl-32b-instruct:free": openrouter("qwen/qwen2.5-vl-32b-instruct:free"),
+    "nvidia/llama-3.1-nemotron-ultra-253b-v1:free": openrouter("nvidia/llama-3.1-nemotron-ultra-253b-v1:free"),
   },
 };
 
 const staticUnsupportedModels = new Set([
-  staticModels.openai["o4-mini"],
   staticModels.google["gemini-2.0-flash-lite"],
-  staticModels.ollama["gemma3:1b"],
-  staticModels.ollama["gemma3:4b"],
-  staticModels.ollama["gemma3:12b"],
+  staticModels.google["gemini-2.0-flash"],
+  staticModels.google["gemini-2.0-flash-preview-image-generation"],
+  staticModels.google["gemini-2.5-flash-lite"],
+  staticModels.google["learnlm-2.0-flash-experimental"],
+  staticModels.google["gemma-3-27b-it"],
+  staticModels.google["gemma-3-12b-it"],
+  staticModels.google["gemma-3-4b-it"],
+  staticModels.google["gemma-3-1b-it"],
+  staticModels.google["gemma-3n-e4b-it"],
+  staticModels.google["gemma-3n-e2b-it"],
   staticModels.openRouter["qwen3-8b:free"],
   staticModels.openRouter["qwen3-14b:free"],
 ]);
