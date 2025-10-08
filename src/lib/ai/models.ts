@@ -1,12 +1,6 @@
-import "server-only";
-
-import { createOllama } from "ollama-ai-provider-v2";
-import { openai } from "@ai-sdk/openai";
+// models.ts
 import { google } from "@ai-sdk/google";
-import { anthropic } from "@ai-sdk/anthropic";
-import { xai } from "@ai-sdk/xai";
-import { LanguageModelV2, openrouter } from "@openrouter/ai-sdk-provider";
-import { createGroq } from "@ai-sdk/groq";
+import { openrouter } from "@openrouter/ai-sdk-provider";
 import { LanguageModel } from "ai";
 import {
   createOpenAICompatibleModels,
@@ -14,80 +8,70 @@ import {
 } from "./create-openai-compatiable";
 import { ChatModel } from "app-types/chat";
 
-const ollama = createOllama({
-  baseURL: process.env.OLLAMA_BASE_URL || "http://localhost:11434/api",
-});
-const groq = createGroq({
-  baseURL: process.env.GROQ_BASE_URL || "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 const staticModels = {
-  openai: {
-    "gpt-4.1": openai("gpt-4.1"),
-    "gpt-4.1-mini": openai("gpt-4.1-migrate"),
-    "o4-mini": openai("o4-mini"),
-    o3: openai("o3"),
-    "gpt-5": openai("gpt-5"),
-    "gpt-5-mini": openai("gpt-5-mini"),
-    "gpt-5-nano": openai("gpt-5-nano"),
-  },
   google: {
-    "gemini-2.5-flash-lite": google("gemini-2.5-flash-lite"),
     "gemini-2.5-flash": google("gemini-2.5-flash"),
     "gemini-2.5-pro": google("gemini-2.5-pro"),
-  },
-  anthropic: {
-    "sonnet-4.5": anthropic("claude-sonnet-4-5"),
-    "opus-4.1": anthropic("claude-opus-4-1"),
-  },
-  xai: {
-    "grok-4-fast": xai("grok-4-fast-non-reasoning"),
-    "grok-4": xai("grok-4"),
-    "grok-3": xai("grok-3"),
-    "grok-3-mini": xai("grok-3-mini"),
-  },
-  ollama: {
-    "gemma3:1b": ollama("gemma3:1b"),
-    "gemma3:4b": ollama("gemma3:4b"),
-    "gemma3:12b": ollama("gemma3:12b"),
-  },
-  groq: {
-    "kimi-k2-instruct": groq("moonshotai/kimi-k2-instruct"),
-    "llama-4-scout-17b": groq("meta-llama/llama-4-scout-17b-16e-instruct"),
-    "gpt-oss-20b": groq("openai/gpt-oss-20b"),
-    "gpt-oss-120b": groq("openai/gpt-oss-120b"),
-    "qwen3-32b": groq("qwen/qwen3-32b"),
+    "gemini-2.5-flash-lite": google("gemini-2.5-flash-lite"),
+    "gemini-2.0-flash": google("gemini-2.0-flash"),
+    "gemini-2.0-flash-preview-image-generation": google(
+      "gemini-2.0-flash-preview-image-generation",
+    ),
+    "learnlm-2.0-flash-experimental": google("learnlm-2.0-flash-experimental"),
+    "gemma-3-27b-it": google("gemma-3-27b-it"),
+    "gemma-3-12b-it": google("gemma-3-12b-it"),
+    "gemma-3-4b-it": google("gemma-3-4b-it"),
+    "gemma-3-1b-it": google("gemma-3-1b-it"),
+    "gemma-3n-e4b-it": google("gemma-3n-e4b-it"),
+    "gemma-3n-e2b-it": google("gemma-3n-e2b-it"),
   },
   openRouter: {
-    "gpt-oss-20b:free": openrouter("openai/gpt-oss-20b:free"),
-    "qwen3-8b:free": openrouter("qwen/qwen3-8b:free"),
-    "qwen3-14b:free": openrouter("qwen/qwen3-14b:free"),
-    "qwen3-coder:free": openrouter("qwen/qwen3-coder:free"),
-    "deepseek-r1:free": openrouter("deepseek/deepseek-r1-0528:free"),
-    "deepseek-v3:free": openrouter("deepseek/deepseek-chat-v3-0324:free"),
-    "gemini-2.0-flash-exp:free": openrouter("google/gemini-2.0-flash-exp:free"),
+    "google/gemini-2.0-flash-exp:free": openrouter("google/gemini-2.0-flash-exp:free"),
+    "moonshotai/kimi-k2:free": openrouter("moonshotai/kimi-k2:free"),
+    "cognitivecomputations/dolphin-mistral-24b-venice-edition:free": openrouter("cognitivecomputations/dolphin-mistral-24b-venice-edition:free"),
+    "google/gemma-3n-e2b-it:free": openrouter("google/gemma-3n-e2b-it:free"),
+    "tencent/hunyuan-a13b-instruct:free": openrouter("tencent/hunyuan-a13b-instruct:free"),
+    "mistralai/mistral-small-3.2-24b-instruct:free": openrouter("mistralai/mistral-small-3.2-24b-instruct:free"),
+    "moonshotai/kimi-dev-72b:free": openrouter("moonshotai/kimi-dev-72b:free"),
+    "deepseek/deepseek-r1-0528:free": openrouter("deepseek/deepseek-r1-0528:free"),
+    "mistralai/devstral-small-2505:free": openrouter("mistralai/devstral-small-2505:free"),
+    "microsoft/mai-ds-r1:free": openrouter("microsoft/mai-ds-r1:free"),
+    "moonshotai/kimi-vl-a3b-thinking:free": openrouter("moonshotai/kimi-vl-a3b-thinking:free"),
+    "google/gemini-2.5-pro-exp-03-25": openrouter("google/gemini-2.5-pro-exp-03-25"),
+    "google/gemma-3-27b-it:free": openrouter("google/gemma-3-27b-it:free"),
+    "google/gemma-3-12b-it:free": openrouter("google/gemma-3-12b-it:free"),
+    "google/gemma-3n-e4b-it:free": openrouter("google/gemma-3n-e4b-it:free"),
+    "deepseek/deepseek-r1:free": openrouter("deepseek/deepseek-r1:free"),
+    "deepseek/deepseek-chat-v3-0324:free": openrouter("deepseek/deepseek-chat-v3-0324:free"),
+    "deepseek/deepseek-r1-0528-qwen3-8b:free": openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free"),
+    "deepseek/deepseek-r1-distill-llama-70b:free": openrouter("deepseek/deepseek-r1-distill-llama-70b:free"),
+    "meta-llama/llama-3.3-70b-instruct:free": openrouter("meta-llama/llama-3.3-70b-instruct:free"),
+    "meta-llama/llama-3.2-11b-vision-instruct:free": openrouter("meta-llama/llama-3.2-11b-vision-instruct:free"),
+    "meta-llama/llama-3.2-3b-instruct:free": openrouter("meta-llama/llama-3.2-3b-instruct:free"),
+    "meta-llama/llama-3.1-405b-instruct:free": openrouter("meta-llama/llama-3.1-405b-instruct:free"),
+    "qwen/qwen3-235b-a22b:free": openrouter("qwen/qwen3-235b-a22b:free"),
+    "qwen/qwen3-235b-a22b-07-25:free": openrouter("qwen/qwen3-235b-a22b-07-25:free"),
+    "qwen/qwen3-30b-a3b:free": openrouter("qwen/qwen3-30b-a3b:free"),
+    "qwen/qwen2.5-vl-32b-instruct:free": openrouter("qwen/qwen2.5-vl-32b-instruct:free"),
+    "nvidia/llama-3.1-nemotron-ultra-253b-v1:free": openrouter("nvidia/llama-3.1-nemotron-ultra-253b-v1:free"),
   },
 };
 
 const staticUnsupportedModels = new Set([
-  staticModels.openai["o4-mini"],
-  staticModels.ollama["gemma3:1b"],
-  staticModels.ollama["gemma3:4b"],
-  staticModels.ollama["gemma3:12b"],
-  staticModels.openRouter["gpt-oss-20b:free"],
+  staticModels.google["gemini-2.0-flash-lite"],
+  staticModels.google["gemini-2.0-flash"],
+  staticModels.google["gemini-2.0-flash-preview-image-generation"],
+  staticModels.google["gemini-2.5-flash-lite"],
+  staticModels.google["learnlm-2.0-flash-experimental"],
+  staticModels.google["gemma-3-27b-it"],
+  staticModels.google["gemma-3-12b-it"],
+  staticModels.google["gemma-3-4b-it"],
+  staticModels.google["gemma-3-1b-it"],
+  staticModels.google["gemma-3n-e4b-it"],
+  staticModels.google["gemma-3n-e2b-it"],
   staticModels.openRouter["qwen3-8b:free"],
   staticModels.openRouter["qwen3-14b:free"],
-  staticModels.openRouter["deepseek-r1:free"],
-  staticModels.openRouter["gemini-2.0-flash-exp:free"],
 ]);
-
-const staticSupportImageInputModels = {
-  ...staticModels.google,
-  ...staticModels.xai,
-  ...staticModels.openai,
-  ...staticModels.anthropic,
-};
 
 const openaiCompatibleProviders = openaiCompatibleModelsSafeParse(
   process.env.OPENAI_COMPATIBLE_DATA,
@@ -109,11 +93,10 @@ export const isToolCallUnsupportedModel = (model: LanguageModel) => {
   return allUnsupportedModels.has(model);
 };
 
-const isImageInputUnsupportedModel = (model: LanguageModelV2) => {
-  return !Object.values(staticSupportImageInputModels).includes(model);
-};
+const firstProvider = Object.keys(allModels)[0];
+const firstModel = Object.keys(allModels[firstProvider])[0];
 
-const fallbackModel = staticModels.openai["gpt-4.1"];
+const fallbackModel = allModels[firstProvider][firstModel];
 
 export const customModelProvider = {
   modelsInfo: Object.entries(allModels).map(([provider, models]) => ({
@@ -121,39 +104,10 @@ export const customModelProvider = {
     models: Object.entries(models).map(([name, model]) => ({
       name,
       isToolCallUnsupported: isToolCallUnsupportedModel(model),
-      isImageInputUnsupported: isImageInputUnsupportedModel(model),
     })),
-    hasAPIKey: checkProviderAPIKey(provider as keyof typeof staticModels),
   })),
   getModel: (model?: ChatModel): LanguageModel => {
     if (!model) return fallbackModel;
     return allModels[model.provider]?.[model.model] || fallbackModel;
   },
 };
-
-function checkProviderAPIKey(provider: keyof typeof staticModels) {
-  let key: string | undefined;
-  switch (provider) {
-    case "openai":
-      key = process.env.OPENAI_API_KEY;
-      break;
-    case "google":
-      key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-      break;
-    case "anthropic":
-      key = process.env.ANTHROPIC_API_KEY;
-      break;
-    case "xai":
-      key = process.env.XAI_API_KEY;
-      break;
-    case "groq":
-      key = process.env.GROQ_API_KEY;
-      break;
-    case "openRouter":
-      key = process.env.OPENROUTER_API_KEY;
-      break;
-    default:
-      return true; // assume the provider has an API key
-  }
-  return !!key && key != "****";
-}
